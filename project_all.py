@@ -1,8 +1,8 @@
 import os
 
 data_dir = 'frackles'
-img_dir = os.path.join(data_dir,'frackles')
-out_dir = os.path.join(data_dir,'frackles_latent')
+img_dir = os.path.join(data_dir,'antifrackles-aligned')
+out_dir = os.path.join(data_dir,'anti-latent')
 
 os.makedirs(out_dir,exist_ok=True)
 
@@ -25,5 +25,8 @@ files = list_files_in_folder(img_dir)
 
 # Print the list of files
 for file in files:
-    os.system(f'python stylegan2/projector.py --network=ffhq.pkl --outdir={out_dir} --target={file} --save-video False')
-
+    ltt_dir = os.path.join(out_dir,os.path.basename(file)[:-4])
+    os.makedirs(ltt_dir,exist_ok=True)
+    print('START: ',ltt_dir)
+    os.system(f'python stylegan2/projector.py --network=ffhq.pkl --outdir={ltt_dir} --target={file} --save-video False')
+    print('DONE: ',ltt_dir)
