@@ -1,7 +1,7 @@
 import os
 
 data_dir = 'frackles'
-img_dir = os.path.join(data_dir,'antifrackles-aligned')
+img_dir = os.path.join(data_dir,'antfrackles-aligned')
 out_dir = os.path.join(data_dir,'anti-latent')
 
 os.makedirs(out_dir,exist_ok=True)
