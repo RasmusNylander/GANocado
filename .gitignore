@@ -9,6 +9,8 @@ models/
 wandb/
 visualizations/
 figures/
+generations/
+*/generations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
