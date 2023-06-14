@@ -2,11 +2,15 @@ Exercise_2.ipynb
 
 ffhq.pkl
 
+*venv*
 .venv/
 venv/
 models/
 wandb/
 visualizations/
+figures/
+generations/
+*/generations/
 FFHQ-alignment/
 out/
 
