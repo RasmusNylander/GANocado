@@ -87,10 +87,12 @@ model.fit(all_features, all_labels)
 
 W_origin = model.coef_
 W = W_origin.reshape((18, 512))
+W_norm = W / np.linalg.norm(W)
+#print(W_norm)
 
-os.makedirs('frackles_svm_coef',exist_ok=True)
+os.makedirs('frackles_svm_coef_norm',exist_ok=True)
 
-np.save('frackles_svm_coef', W)
+np.save('frackles_svm_coef_norm', W_norm)
 
 '''
 W_after = W.flatten()
