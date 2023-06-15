@@ -108,4 +108,4 @@ ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--'
 
 legend_labels = ['Class 0', 'Class 1', 'Decision Boundary']
 plt.legend(legend_labels)
-plt.show()
+plt.savefig('SVM_for_frackle.png')
