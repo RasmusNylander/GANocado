@@ -25,4 +25,5 @@ while len(arguments) > 0:
 # Save the shifted latent vector
 np.savez("shifted", w=latent)
 print("Saved shifted.npz")
+os.system("python stylegan2/generate.py --outdir=figures --network=ffhq.pkl --projected-w=shifted.npz")
 exit(0)
