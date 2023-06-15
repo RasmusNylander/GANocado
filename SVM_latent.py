@@ -22,13 +22,13 @@ def list_subfolders(folder_path):
             subfolder_names.append(item)
     return subfolder_names
 
-def merge_npz_files(npz_files):
+def merge_npz_files(npz_files_paths, label):
     all_features = []
     all_labels = []
-    for file in npz_files:
+    for file in npz_files_paths:
         data = np.load(file)
-        features = data['features']
-        labels = data['labels']
+        features = data['w'].flatten()
+        labels = label
         all_features.append(features)
         all_labels.append(labels)
     return all_features, all_labels
@@ -40,23 +40,31 @@ img_dir_frackles = os.path.join(data_dir,'frackles-latent')
 
 subfolders_frackle = list_subfolders(img_dir_frackles)
 subfolders_anti = list_subfolders(img_dir)
-npz_files_anti = select_files(img_dir, subfolders_anti)
-npz_files_frackle = select_files(img_dir_frackles, subfolders_frackle) 
-#print(npz_files_frackle[0])           #print data path
-#print(npz_files_anti[0])        #print data path
+npz_files_anti_paths = select_files(img_dir, subfolders_anti)
+npz_files_frackle_paths = select_files(img_dir_frackles, subfolders_frackle) 
+#print(npz_files_frackle_paths[0])           #print data path
+#print(npz_files_anti_paths[0])        #print data path
+
 
 '''
-# print all the names
 print("Arrays in the npz file:", list(data.keys()))
 
 # print the content inside
 for array_name in data:
     print(f"\nArray name: {array_name}")
     print("Array content:\n", data[array_name])
+    print("Array shape:\n", data[array_name].shape)
 '''
 
-data_class1_features,  data_class1_labels = merge_npz_files(npz_files_frackle)
-data_class2_features,  data_class2_labels = merge_npz_files(npz_files_anti)
+data_class1_features,  data_class1_labels = merge_npz_files(npz_files_frackle_paths, 0)
+data_class2_features,  data_class2_labels = merge_npz_files(npz_files_anti_paths, 1)
+
+'''
+print(len(data_class1_features))
+print(len(data_class1_labels))
+print(len(data_class2_features))
+print(len(data_class2_labels))
+'''
 
 # get the features and labels
 features_class1 = data_class1_features
@@ -69,16 +77,19 @@ labels_class2 = data_class2_labels
 all_features = np.concatenate((features_class1, features_class2), axis=0)
 all_labels = np.concatenate((labels_class1, labels_class2), axis=0)
 
+'''
 train_features, test_features, train_labels, test_labels = train_test_split(all_features, all_labels, test_size=0.2, random_state=42)
-
-# list to numpy
-all_features = np.concatenate(all_features, axis=0)
-all_labels = np.concatenate(all_labels, axis=0)
+'''
 
 model = svm.SVC(kernel='linear')
 model.fit(all_features, all_labels)
 
+params = model.get_params()
 
+for key, value in params.items():
+    print(f"{key}: {value}")
+
+'''
 predictions = model.predict(test_features)
 
 accuracy = accuracy_score(test_labels, predictions)
@@ -88,24 +99,4 @@ recall = recall_score(test_labels, predictions)
 print("Accuracy:", accuracy)
 print("Precision:", precision)
 print("Recall:", recall)
-
-#Visualization
-plt.scatter(all_features[:, 0], all_features[:, 1], c=all_labels, cmap='viridis')
-
-ax = plt.gca()
-xlim = ax.get_xlim()
-ylim = ax.get_ylim()
-
-
-xx = np.linspace(xlim[0], xlim[1], 100)
-yy = np.linspace(ylim[0], ylim[1], 100)
-YY, XX = np.meshgrid(yy, xx)
-xy = np.vstack([XX.ravel(), YY.ravel()]).T
-
-Z = model.decision_function(xy).reshape(XX.shape)
-
-ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
-
-legend_labels = ['Class 0', 'Class 1', 'Decision Boundary']
-plt.legend(legend_labels)
-plt.savefig('SVM_for_frackle.png')
+'''
