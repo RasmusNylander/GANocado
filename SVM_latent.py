@@ -4,6 +4,7 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import os
+import collections
 
 #npz data intergrate
 def select_files(img_dir, subfolders):
@@ -84,10 +85,22 @@ train_features, test_features, train_labels, test_labels = train_test_split(all_
 model = svm.SVC(kernel='linear')
 model.fit(all_features, all_labels)
 
-params = model.get_params()
+W_origin = model.coef_
+W = W_origin.reshape((18, 512))
 
-for key, value in params.items():
-    print(f"{key}: {value}")
+os.makedirs('frackles_svm_coef',exist_ok=True)
+
+np.save('frackles_svm_coef', W)
+
+'''
+W_after = W.flatten()
+
+
+print(W_origin.shape)
+print(W_after.shape)
+print(W.shape)
+print(W_origin==W_after)
+'''
 
 '''
 predictions = model.predict(test_features)
