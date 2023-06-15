@@ -13,6 +13,7 @@ generations/
 */generations/
 FFHQ-alignment/
 out/
+frackles/anti-latent_old/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
