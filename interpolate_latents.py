@@ -1,6 +1,6 @@
 import numpy as np
 
-latent0 = np.load("latent0/projected_w.npz")
+latent0 = np.load("shift/rasmus.npz")
 latent1 = np.load("latent1/projected_w.npz")
 
 breaks = 5
@@ -15,3 +15,14 @@ for i, alpha in enumerate(alphas):
 np.savez(f'interpolate/betweens.npz', w = result)
 
 #python stylegan2/generate.py --network=ffhq.pkl --projected-w=interpolate/betweens.npz --outdir=interpolate
+
+
+
+anna = np.load("latent0/projected_w.npz")
+james = np.load("latent2/projected_w.npz")
+rasmus = latent0
+toby = latent1
+
+mix = 0.25*anna['w'] + 0.25*james['w'] + 0.25*rasmus['w'] + 0.25*toby['w']
+
+np.savez("mix/mix.npz", w=mix)
